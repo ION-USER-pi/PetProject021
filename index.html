@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petproject021</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --text-color: #34495e;
+            --light-bg: #ecf0f1;
+            --dark-bg: #1a202c;
+            --transition: all 0.3s ease-in-out;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            line-height: 1.6;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #ecf0f1;
+        }
+
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode header {
+            background: #121212;
+        }
+
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+            margin-right: 5px;
+        }
+
+        .logo-text {
+            display: inline-block;
+            position: relative;
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease-out;
+        }
+
+        .logo:hover .logo-text::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent-color);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        nav ul li a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            margin-top: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark-mode .hero {
+            background: linear-gradient(135deg, #121212 0%, #2c3e50 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+            z-index: -1;
+        }
+
+        .btn:hover:before {
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        section {
+            padding: 80px 0;
+            transition: var(--transition);
+        }
+
+        .dark-mode section {
+            background-color: var(--dark-bg);
+        }
+
+        section:nth-child(even) {
+            background-color: white;
+        }
+
+        .dark-mode section:nth-child(even) {
+            background-color: #2d3748;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+        }
+
+        .section-title h2:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 15px auto 0;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            top: 0;
+        }
+
+        .dark-mode .feature-box {
+            background-color: #2d3748;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode .feature-box:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            display: inline-block;
+        }
+
+        .feature-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-text h3:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+        }
+
+        .interactive-demo {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .dark-mode .interactive-demo {
+            background-color: #121212;
+        }
+
+        .demo-container {
+            max-width: 800px;
+            margin: 40px auto 0;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .demo-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .demo-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .demo-controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .demo-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+        }
+
+        .demo-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .demo-result {
+            width: 100%;
+            min-height: 200px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            padding: 20px;
+            font-family: monospace;
+            text-align: left;
+            overflow: auto;
+            position: relative;
+        }
+
+        .testimonials {
+            background-color: var(--light-bg);
+            text-align: center;
+        }
+
+        .dark-mode .testimonials {
+            background-color: var(--dark-bg);
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 20px;
+            display: none;
+        }
+
+        .dark-mode .testimonial {
+            background-color: #2d3748;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .testimonial-text:before,
+        .testimonial-text:after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--accent-color);
+            position: absolute;
+        }
+
+        .testimonial-text:before {
+            top: -20px;
+            left: -10px;
+        }
+
+        .testimonial-text:after {
+            bottom: -30px;
+            right: -10px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .testimonial-author {
+            color: #e2e8f0;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .dark-mode .testimonial-role {
+            color: #a0aec0;
+        }
+
+        .slider-controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .slider-btn {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .contact {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .dark-mode .contact {
+            background: linear-gradient(135deg, #121212 0%, #2c3e50 100%);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 40px auto 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: white;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .dark-mode footer {
+            background-color: #121212;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+            text-align: left;
+            padding: 0 15px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-align: center;
+            line-height: 40px;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animation on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .dark-mode .theme-toggle {
+            background-color: var(--accent-color);
+        }
+
+        /* Floating elements */
+        .floating-element {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Media Queries */
+        @media (max-width: 991px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .about-image {
+                order: -1;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                background-color: var(--primary-color);
+                width: 100%;
+                height: calc(100vh - 80px);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 40px;
+                transition: var(--transition);
+                z-index: 100;
+            }
+
+            .dark-mode nav ul {
+                background-color: #121212;
+            }
+
+            nav ul.show {
+                left: 0;
+            }
+
+            nav ul li {
+                margin: 15px 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .feature-box {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 0 10px;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .footer-section {
+                flex: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <span>&lt;/&gt;</span>
+                <div class="logo-text">SemanticWeb</div>
+            </div>
+            <nav>
+                <ul id="menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="menu-toggle" id="menuToggle">☰</div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="particle-container" id="particles"></div>
+        <div class="hero-content">
+            <h1>The Future of <span style="color: var(--accent-color);">Semantic Web Services</span></h1>
+            <p>Transforming the web into a semantic knowledge network that machines can understand and reason with, revolutionizing how applications communicate and collaborate.</p>
+            <a href="#features" class="btn">Explore Features</a>
+        </div>
+    </section>
+
+    <section id="features">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Key Features</h2>
+            </div>
+            <div class="features">
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Semantic Interoperability</h3>
+                    <p>Enable different systems to understand and interpret data with the same meaning, regardless of how it's structured or presented.</p>
+                </div>
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Intelligent Reasoning</h3>
+                    <p>Leverage ontologies and knowledge graphs to enable machines to make logical inferences and connections between concepts.</p>
+                </div>
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Enhanced Discovery</h3>
+                    <p>Automatically find and utilize web services based on what they do rather than just by name or simple keywords.</p>
+                </div>
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Dynamic Composition</h3>
+                    <p>Automatically combine web services to achieve complex tasks that no single service can handle alone.</p>
+                </div>
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Semantic Security</h3>
+                    <p>Define and enforce access policies based on semantic understanding of users, resources, and operations.</p>
+                </div>
+                <div class="feature-box fade-in">
+                    <div class="feature-icon">📊</div>
+                    <h3>Contextual Adaptation</h3>
+                    <p>Services that adapt their behavior based on semantic understanding of the user's context and needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Understanding Semantic Web Services</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text fade-in">
+                    <h3>Beyond Traditional Web Services</h3>
+                    <p>Semantic Web Services represent the evolution of traditional web services by integrating semantic knowledge. While traditional web services focus on syntactic interoperability, semantic web services add a layer of meaning that machines can understand.</p>
+                    <p>This semantic layer is built using technologies like RDF, OWL, and SPARQL, which allow for rich descriptions of services, their capabilities, and requirements. These descriptions enable automated discovery, composition, and invocation of services.</p>
+                    <p>With semantic annotations, web services can be matched to user needs with unprecedented precision, even when the request doesn't exactly match the service description. This leads to more intelligent service ecosystems.</p>
+                    <a href="#demo" class="btn">Try The Demo</a>
+                </div>
+                <div class="about-image fade-in">
+                    <img src="SemanticWeb.png" alt="Semantic Web Architecture">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="interactive-demo">
+        <div class="container">
+            <div class="demo-header fade-in">
+                <h2>Interactive Semantic Web Service Demo</h2>
+                <p>Experience the power of semantic reasoning with our interactive demo</p>
+            </div>
+            <div class="demo-container fade-in">
+                <div class="demo-content">
+                    <div class="demo-controls">
+                        <button class="demo-btn" id="discoverBtn">Discover Services</button>
+                        <button class="demo-btn" id="composeBtn">Compose Services</button>
+                        <button class="demo-btn" id="invokeBtn">Invoke Service</button>
+                        <button class="demo-btn" id="resetBtn">Reset Demo</button>
+                    </div>
+                    <div class="demo-result" id="demoResult">
+                        // Semantic Web Services Demo
+                        // Click one of the buttons above to begin...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>What Experts Say</h2>
+            </div>
+            <div class="testimonial-slider fade-in">
+                <div class="testimonial active">
+                    <div class="testimonial-text">
+                        Semantic Web Services have revolutionized how our enterprise systems communicate. The ability to dynamically discover and compose services based on their meaning rather than just their API signatures has reduced integration time by 70%.
+                    </div>
+                    <div class="testimonial-author">Dr. Sarah Chen</div>
+                    <div class="testimonial-role">Chief Technology Officer, TechFusion</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        The semantic reasoning capabilities have transformed our data integration pipeline. What used to take weeks of manual mapping now happens automatically with much higher accuracy.
+                    </div>
+                    <div class="testimonial-author">Mark Johnson</div>
+                    <div class="testimonial-role">Data Integration Specialist, DataNexus</div>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        As researchers, we've been able to create intelligent agents that autonomously discover and utilize web services to answer complex scientific questions. The semantic layer makes this possible.
+                    </div>
+                    <div class="testimonial-author">Prof. Elena Rodriguez</div>
+                    <div class="testimonial-role">AI Research Lead, University of Technology</div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-btn" id="prevBtn">&#10094;</button>
+                    <button class="slider-btn" id="nextBtn">&#10095;</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Get In Touch</h2>
+            </div>
+            <div class="contact-form fade-in">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" class="form-control" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" class="form-control" placeholder="Enter subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" class="form-control" rows="5" placeholder="Type your message..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>We are pioneering the next generation of intelligent web services that understand semantics and context, enabling truly intelligent applications.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-links">
+                        <li>Email: info@semanticweb.com</li>
+                        <li>Phone: +1 (555) 123-4567</li>
+                        <li>Address: 123 Tech Park, Silicon Valley, CA</li>
+                    </ul>
+                    <div class="social-links">
+                        <a href="#" class="social-link">𝕏</a>
+                        <a href="#" class="social-link">ƒ</a>
+                        <a href="#" class="social-link">𝕝</a>
+                        <a href="#" class="social-link">𝕚</a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 SemanticWeb Services. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <div class="theme-toggle" id="themeToggle">🌓</div>
+
+    <script>
+        $(document).ready(function() {
+            // Mobile Menu Toggle
+            $('#menuToggle').click(function() {
+                $('#menu').toggleClass('show');
+            });
+
+            // Smooth scrolling for anchor links
+            $('a[href^="#"]').on('click', function(e) {
+                e.preventDefault();
+                
+                var target = this.hash;
+                var $target = $(target);
+                
+                $('html, body').animate({
+                    'scrollTop': $target.offset().top - 80
+                }, 800, 'swing');
+                
+                if ($('#menu').hasClass('show')) {
+                    $('#menu').removeClass('show');
+                }
+            });
+
+            // Dark mode toggle
+            $('#themeToggle').click(function() {
+                $('body').toggleClass('dark-mode');
+                localStorage.setItem('darkMode', $('body').hasClass('dark-mode'));
+            });
+
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                $('body').addClass('dark-mode');
+            }
+
+            // Fade-in animation on scroll
+            const faders = document.querySelectorAll('.fade-in');
+            
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -100px 0px"
+            };
+            
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('appear');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+            
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+
+            // Testimonial slider
+            let currentSlide = 0;
+            const testimonials = $('.testimonial');
+            const totalSlides = testimonials.length;
+            
+            $('#nextBtn').click(function() {
+                testimonials.removeClass('active');
+                currentSlide = (currentSlide + 1) % totalSlides;
+                testimonials.eq(currentSlide).addClass('active');
+            });
+            
+            $('#prevBtn').click(function() {
+                testimonials.removeClass('active');
+                currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+                testimonials.eq(currentSlide).addClass('active');
+            });
+            
+            // Auto change testimonials
+            setInterval(function() {
+                $('#nextBtn').click();
+            }, 8000);
+
+            // Demo functionality
+            $('#discoverBtn').click(function() {
+                const result = `
+// Discovering Semantic Web Services...
+// Using OWL-S service profiles to match requirements
+
+[DISCOVERED] TravelBookingService
+  - Capabilities: Flight booking, Hotel reservation
+  - Input: Destination, Dates, Preferences
+  - Output: Booking confirmation, Itinerary
+
+[DISCOVERED] WeatherForecastService
+  - Capabilities: Current weather, 7-day forecast
+  - Input: Location, Preferred units
+  - Output: Temperature, Conditions, Alerts
+
+[DISCOVERED] CurrencyExchangeService
+  - Capabilities: Real-time exchange rates, Conversion
+  - Input: Source currency, Target currency, Amount
+  - Output: Converted amount, Exchange rate
+
+// 3 services discovered with semantic matching`;
+                
+                typeEffect('#demoResult', result);
+            });
+            
+            $('#composeBtn').click(function() {
+                const result = `
+// Composing Semantic Web Services...
+// Analyzing semantic dependencies and data flows
+
+[COMPOSITION PLAN]
+1. WeatherForecastService(location) → weatherData
+2. IF weatherData.conditions == "GOOD" THEN
+3.   TravelBookingService(location, dates) → bookingData
+4.   CurrencyExchangeService(USD, bookingData.localCurrency, 
+      bookingData.cost) → costInUSD
+5. ELSE
+6.   Suggest alternative dates based on weatherData.forecast
+
+[SEMANTIC REASONING]
+- Inferred that WeatherForecastService output affects travel plans
+- Determined currency conversion needed based on booking location
+- Applied ontology rules to handle travel constraints
+
+// Composition ready with 94% confidence score`;
+                
+                typeEffect('#demoResult', result);
+            });
+            
+            $('#invokeBtn').click(function() {
+                const result = `
+// Invoking Composed Semantic Web Service...
+// Executing with parameters: { location: "Tokyo", dates: "2025-04-15 to 2025-04-22" }
+
+[WEATHER SERVICE] Request sent with semantic annotations...
+[WEATHER SERVICE] Response received: Temperature: 22°C, Conditions: GOOD
+
+[TRAVEL SERVICE] Request sent with semantic annotations...
+[TRAVEL SERVICE] Response received: 
+  - Flight: ANA NH102, Departure: 10:30 AM
+  - Hotel: Park Hyatt Tokyo, Room: Deluxe
+  - Booking reference: JPN20250415-89273
+  - Cost: 245,000 JPY
+
+[CURRENCY SERVICE] Request sent with semantic annotations...
+[CURRENCY SERVICE] Response received:
+  - Exchange rate: 1 JPY = 0.0091 USD
+  - Total cost in USD: $2,229.50
+
+[SEMANTIC PROCESSING]
+- Added context data from user profile
+- Applied preferences from previous interactions
+- Enhanced response with POI data from knowledge graph
+
+// Service execution complete with semantic enrichment`;
+                
+                typeEffect('#demoResult', result);
+            });
+            
+            $('#resetBtn').click(function() {
+                $('#demoResult').text('// Semantic Web Services Demo\n// Click one of the buttons above to begin...');
+            });
+
+            // Create floating elements
+            createParticles();
+
+            // Handle contact form submission
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                alert('Thank you for your message! We will get back to you soon.');
+                this.reset();
+            });
+
+            // Type effect for demo
+            function typeEffect(element, text) {
+                const $element = $(element);
+                $element.text('');
+                
+                let i = 0;
+                const interval = setInterval(function() {
+                    if (i < text.length) {
+                        $element.append(text.charAt(i));
+                        $element.scrollTop($element[0].scrollHeight);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 10);
+            }
+
+            // Create floating particles
+            function createParticles() {
+                const particleContainer = document.getElementById('particles');
+                if (!particleContainer) return;
+                
+                for (let i = 0; i < 20; i++) {
+                    const size = Math.random() * 10 + 5;
+                    const particle = document.createElement('div');
+                    particle.classList.add('floating-element');
+                    
+                    // Random positioning
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    
+                    // Random animation
+                    const duration = Math.random() * 40 + 20;
+                    const delay = Math.random() * 5;
+                    
+                    particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                    
+                    particleContainer.appendChild(particle);
+                }
+            }
+        });
+
+        // Floating animation
+        document.styleSheets[0].insertRule(`
+            @keyframes float {
+                0% {
+                    transform: translate(0, 0) rotate(0deg);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 0.8;
+                }
+                90% {
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg);
+                    opacity: 0;
+                }
+            }
+        `, document.styleSheets[0].cssRules.length);
+    </script>
+</body>
+</html>
